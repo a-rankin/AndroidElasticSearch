@@ -1,5 +1,6 @@
 package ca.ualberta.ssrg.movies;
 
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 
@@ -171,10 +172,10 @@ public class MainActivity extends Activity {
 			} catch (UnsupportedEncodingException e) {
 				throw new RuntimeException(e);
 			}
-			Type searchResponseType = new TypeTokenSearchResponse<movie>>() {
-			} getType();
+			Type searchResponseType = new TypeTokenSearchResponse<movie>() {
+			}.getType();
 			
-			SearchResponse<movie> result = gson.fromJson(new InputStreamReader(response.getEntity().getContent()),searchResponseType};
+			SearchResponse<Movie> result = gson.fromJson(new InputStreamReader(response.getEntity().getContent()).searchResponseType);
 			}
 			
 			
