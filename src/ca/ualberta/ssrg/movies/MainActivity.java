@@ -11,6 +11,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import android.app.Activity;
 import android.content.Context;
@@ -172,10 +173,10 @@ public class MainActivity extends Activity {
 			} catch (UnsupportedEncodingException e) {
 				throw new RuntimeException(e);
 			}
-			Type searchResponseType = new TypeTokenSearchResponse<movie>() {
+			Type searchResponseType = new TypeToken<SearchResponse<Movie>>() {
 			}.getType();
 			
-			SearchResponse<Movie> result = gson.fromJson(new InputStreamReader(response.getEntity().getContent()).searchResponseType);
+			SearchResponse<Movie> result = gson.fromJson(new InputStreamReader(response.getEntity().getContent().searchResponseType);
 			}
 			
 			
