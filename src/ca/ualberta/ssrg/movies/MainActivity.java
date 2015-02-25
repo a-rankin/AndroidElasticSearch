@@ -1,5 +1,16 @@
 package ca.ualberta.ssrg.movies;
 
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import com.google.gson.Gson;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +27,8 @@ import ca.ualberta.ssrg.movies.es.ESMovieManager;
 import ca.ualberta.ssrg.movies.es.Movie;
 import ca.ualberta.ssrg.movies.es.Movies;
 import ca.ualberta.ssrg.movies.es.MoviesController;
+import ca.ualberta.ssrg.movies.es.data.SearchResponse;
+import ca.ualberta.ssrg.movies.es.data.SimpleSearchCommand;
 
 public class MainActivity extends Activity {
 
@@ -75,6 +88,8 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		
+		Thread thread = new SearchThread();
+		thread.start();
 		
 
 		// Refresh the list when visible
@@ -131,7 +146,39 @@ public class MainActivity extends Activity {
 
 
 	class SearchThread extends Thread {
-		// TODO: Implement search thread
+		
+		@Override
+		public void run() {
+			HttpClient client = new DefaultHttpClient();
+			HttpPost post = new HttpPost("http://cmput301.softwareprocess.es:8080/testing/movie/_search");
+			Gson gson = new Gson();
+			String string = gson.toJson(new SimpleSearchCommand(""));
+			
+			StringEntity stringEntity = null;
+			try { 
+				stringEntity = new StringEntity(string);
+			} catch (UnsupportedEncodingException e) {
+				throw new RuntimeException(e);
+			}
+			
+			post.setHeader("Accept", "application/json");
+			post.setEntity(stringEntity);
+			
+			HttpResponse response;
+			
+			try {
+				response = client.execute(post);
+			} catch (UnsupportedEncodingException e) {
+				throw new RuntimeException(e);
+			}
+			Type searchResponseType = new TypeTokenSearchResponse<movie>>() {
+			} getType();
+			
+			SearchResponse<movie> result = gson.fromJson(new InputStreamReader(response.getEntity().getContent()),searchResponseType};
+			}
+			
+			
+		}
 		
 	}
 
